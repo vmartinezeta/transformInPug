@@ -6,7 +6,7 @@ const elements = []
 let types = ["ul", "li", "ol", "form", "header", "section", "article", "aside"]
 let id = 0
 
-const transformPug = html => {
+const transformInPug = html => {
     let zindex = 1
     createObject({ html, parent: 0, zindex })
     zindex++
@@ -69,5 +69,5 @@ const html = `
 <ul class="laptop"><li class="laptop__item">Hp</li><li class="laptop_item">Dell inspirion</li></ul>
 `
 
-const pug = transformPug(html)
+const pug = transformInPug(html)
 console.log(pug)
