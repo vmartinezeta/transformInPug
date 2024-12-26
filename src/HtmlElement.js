@@ -1,27 +1,40 @@
-export default class HtmlElement {
+class HtmlElement {
     constructor({
         id,
         parent,
-        zindex,
+        profundidad,
         type,
-        hasChildren = true,
         innerHtml
     }) {
         this.id = id
         this.parent = parent
-        this.zindex = zindex
+        this.profundidad = profundidad
         this.type = type
-        this.hasChildren = hasChildren
         this.innerHtml = innerHtml
+        this.selected = false
     }
 
     isText() {
-        return /\w*/.test(this.innerHtml)
+        const regExp = new RegExp(`<.*?>`, "g")
+        const matches = this.innerHtml.match(regExp) || []
+        return matches.length === 0
+    }
+
+    findMatches() {
+    }
+
+    getText() {
+        const nuevo = this.newInstance()
+        nuevo.removeParent()
+        if (nuevo.isText()) return nuevo.innerHtml
+        return ""
     }
 
     removeParent() {
         const regExp = new RegExp(`<${this.type}.*?>`, "g")
-        const tag = this.innerHtml.match(regExp).at(0)
+        const matches = this.innerHtml.match(regExp)
+        if (!matches) return
+        const tag = matches.at(0)
         const regExp2 = new RegExp(`${tag}`, "g")
         this.innerHtml = this.innerHtml.replace(regExp2, "")
         const regExp3 = new RegExp(`</${this.type}>`, "g")
@@ -32,10 +45,11 @@ export default class HtmlElement {
         return new HtmlElement({
             id: this.id,
             parent: this.parent,
-            zindex: this.zindex,
+            profundidad: this.profundidad,
             type: this.type,
-            hasChildren: this.hasChildren,
             innerHtml: this.innerHtml
         })
     }
 }
+
+module.exports= HtmlElement
